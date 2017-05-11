@@ -1,4 +1,4 @@
-require './lib/existence/adapters/adapter_base'
+require_relative 'adapter_base'
 
 module Existence
 
@@ -6,9 +6,8 @@ module Existence
 
     class GetScopesCommand < AdapterBase
 
-      def initialize(config: Configuration)
+      def initialize
         super
-        @config = config
       end
 
       def call
@@ -18,11 +17,8 @@ module Existence
       private
 
       def get_from_port(service, resource)
-        port.new.get_from_port(service: service, resource: resource)
-      end
-
-      def service
-        @config.identity_host
+        binding.pry
+        @port.new.get_from_port(service: service, resource: resource)
       end
 
       def resource

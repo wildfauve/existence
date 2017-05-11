@@ -29,6 +29,8 @@ Existence requires that you provide some configuration.
 ```ruby
 Existence::Configuration.build do |config|
   config.identity_host = "http://localhost:5000"
+  config.mock = false                             # set to true if you want mock responses
+                                                  # probably need to consider mock errors
 end
 ```
 

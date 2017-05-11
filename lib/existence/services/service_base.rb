@@ -1,13 +1,11 @@
-require './lib/existence/policy/monad_policy_enforcer'
-
 module Existence
 
   module Services
 
     class ServiceBase
 
-      def initialize(monad_enforcer: Domain::MonadPolicyEnforcer, **)
-        @monad_enforcer = monad_enforcer
+      def initialize(config: Configuration, **)
+        @config = config
       end
 
       def user_bearer(user)
@@ -15,8 +13,15 @@ module Existence
       end
 
       def check_authorisation(decision_point: ,action:)
-        decision_point.(resource: self.class::RESOURCE, action: action, enforcer: @monad_enforcer.new)
+        decision_point.(resource: self.class::RESOURCE, action: action)
       end
+
+      private
+
+      def oauth_client_credentials
+        { client_id: @config.config.client_id, client_secret: @config.config.client_secret }
+      end
+
 
     end
 

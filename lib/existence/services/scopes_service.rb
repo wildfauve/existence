@@ -1,4 +1,4 @@
-require './lib/existence/domain/scope'
+require_relative '../domain/scope'
 
 module Existence
 

@@ -1,4 +1,4 @@
-require './lib/existence/ports/identity_port'
+require_relative '../ports/identity_port'
 
 module Existence
 
@@ -12,10 +12,13 @@ module Existence
 
       attr_reader :port
 
-      def initialize(port: Ports::IdentityPort, **) #oauth_token_value: Domain::OauthTokenValue
+      def initialize(port: Ports::IdentityPort, config: Configuration, **) #oauth_token_value: Domain::OauthTokenValue
         @port = port
+        @config = config
         # @oauth_token_value = oauth_token_value
       end
+
+      private
 
       def result(result)
         return Left(nil) if result.failure? || (result.value.status == :system_failure)
@@ -38,6 +41,11 @@ module Existence
       def basic_credentials(user, secret)
         Base64.strict_encode64("#{user}:#{secret}")
       end
+
+      def service
+        @config.config.identity_host
+      end
+
 
     end
 
