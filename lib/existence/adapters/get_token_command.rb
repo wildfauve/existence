@@ -14,7 +14,7 @@ module Existence
         @oauth_token_value = oauth_token_value
       end
 
-      def call(params:, credentials:, service: ENV['TOKEN_ENDPOINT'] )
+      def call(params:, credentials: )
         result(send_to_port(params, credentials, service))
       end
 

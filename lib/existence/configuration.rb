@@ -11,7 +11,9 @@ module Existence
       RESOURCES = { scopes: '/api/concepts/scopes',
                     authz: '/api/user_authz',
                     userinfo: '/userinfo',
-                    token: 'oauth/token'}
+                    token: '/oauth/token',
+                    logout: '/logout',
+                    authorise: '/oauth/authorize'}
 
       def build
         yield config
@@ -29,6 +31,10 @@ module Existence
 
       def resource_for(resource)
         config.resources[resource]
+      end
+
+      def endpoint_for(resource)
+        config.identity_host + resource_for(resource)
       end
 
       # def set_resources

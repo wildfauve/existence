@@ -15,7 +15,6 @@ module Existence
 
       def call(token_value)
         # TODO: validation and error object
-        binding.pry
         Right(token_value).bind do |token_value|
           get_user(token_value)
         end.bind do |result|

@@ -70,17 +70,17 @@ module Existence
       end
 
       def activities_value(activities)
-        activities.select {|activity| activity.include? service }
+        return activities unless service_name
+        activities.select {|activity| activity.include? service_name }
       end
 
       def determine_system_user(info)
         info["preferred_username"].include? SYSTEM_USER
       end
 
-      def service
-        @config.config.identity_host
+      def service_name
+        @config.config.service_name
       end
-
       def mock_value
         {
          "sub"=>"af75c3b7-21a3-4fd1-ac85-2180f754166c",

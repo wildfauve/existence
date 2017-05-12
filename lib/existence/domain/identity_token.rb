@@ -48,6 +48,13 @@ module Existence
         }
       end
 
+      def client_credentials_grant_params(code, uri, **)
+        {
+          grant_type: CLIENT_CREDENTIALS_GRANT,
+        }
+      end
+
+
       def get_token(params, credentials)
         @adapter.new.(params: params, credentials: credentials)
       end

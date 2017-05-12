@@ -17,7 +17,6 @@ module Existence
       private
 
       def get_from_port(service, resource)
-        binding.pry
         @port.new.get_from_port(service: service, resource: resource)
       end
 
