@@ -21,6 +21,7 @@ module Existence
   require 'existence/services/cancel_authorisations_service'
   require 'existence/services/get_token_service'
   require 'existence/services/get_userinfo_service'
+  require 'existence/services/create_account_service'
   require 'existence/validations/validations_factory'
 
 

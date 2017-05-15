@@ -13,7 +13,8 @@ module Existence
                     userinfo: '/userinfo',
                     token: '/oauth/token',
                     logout: '/logout',
-                    authorise: '/oauth/authorize'}
+                    authorise: '/oauth/authorize',
+                    accounts: '/api/client_accounts'}
 
       def build
         yield config

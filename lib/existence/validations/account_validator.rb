@@ -25,8 +25,9 @@ module Existence
 
 
          required(:name) { str?  }
-         required(:scopes).each { urn? }
+         required(:allowed_scopes).each { urn? }
          required(:why) { str? }
+         optional(:scoping_user_token).maybe { str? }
        end
 
      attr_reader :validation_schema

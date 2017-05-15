@@ -8,7 +8,7 @@ module Existence
 
       include Dry::Monads::Either::Mixin
 
-      SUCCESS = :ok
+      SUCCESS_STATUS = :ok
 
       attr_reader :port
 
@@ -21,7 +21,7 @@ module Existence
       private
 
       def result(result)
-        return Left(nil) if result.failure? || (result.value.status == :system_failure)
+        return Left(result.value) if result.failure? || failure_status(result.value.status)
         Right(value(result.value.body))
       end
 
@@ -32,6 +32,10 @@ module Existence
 
       def bearer_token(jwt)
         "Bearer #{jwt}"
+      end
+
+      def failure_status(status)
+        status != SUCCESS_STATUS
       end
 
       def basic_auth_token(credentials)
