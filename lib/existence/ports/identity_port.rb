@@ -8,8 +8,6 @@ module Existence
 
       include Dry::Monads::Either::Mixin
 
-      attr_reader :port_service
-
       include Discourse::Circuit
 
       CONTENT_TYPES = {
