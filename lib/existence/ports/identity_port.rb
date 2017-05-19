@@ -24,8 +24,8 @@ module Existence
           begin
             Right(build_result(with_circuit do |circuit|
               circuit.service_name = args[:service]
-              circuit.logger = Rails.logger
-            end.call { post(port_service, args[:service], args[:resource], args[:credentials], args[:params], args[:encoding] ) } ) )
+              # circuit.logger = Rails.logger
+            end.call { post(@port_service, args[:service], args[:resource], args[:credentials], args[:params], args[:encoding] ) } ) )
           rescue Discourse::PortException => e
             Left(nil)
           end
@@ -38,7 +38,7 @@ module Existence
           begin
             Right(build_result(with_circuit do |circuit|
               circuit.service_name = args[:resource]
-            end.call { get(port_service, args[:service], args[:resource], args[:credentials], args[:query_params] ) } ) )
+            end.call { get(@port_service, args[:service], args[:resource], args[:credentials], args[:query_params] ) } ) )
           rescue Discourse::PortException => e
             Left(nil)
           end
@@ -50,7 +50,7 @@ module Existence
           begin
             Right(build_result(with_circuit do |circuit|
               circuit.service_name = args[:resource]
-            end.call { delete(port_service, args[:service], args[:resource], args[:credentials]) } ) )
+            end.call { delete(@port_service, args[:service], args[:resource], args[:credentials]) } ) )
           rescue Discourse::PortException => e
             Left(nil)
           end

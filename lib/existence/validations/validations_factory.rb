@@ -1,4 +1,5 @@
 require_relative 'account_validator'
+require_relative 'client_validator'
 
 module Existence
 
@@ -7,7 +8,8 @@ module Existence
     include Dry::Monads::Either::Mixin
 
     VALIDATIONS = {
-      account: Validations::AccountValidator
+      account: Validations::AccountValidator,
+      client: Validations::ClientValidator
     }
 
     def initialize()

@@ -5,6 +5,7 @@ module Existence
     class LinkValue < Dry::Struct
       attribute :rel,       Types::String
       attribute :href,      Types::String
+      attribute :type,      Types::String
     end
 
   end

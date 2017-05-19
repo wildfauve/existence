@@ -4,7 +4,7 @@ module Existence
 
   module Adapters
 
-    class CreateAccountCommand < AdapterBase
+    class CreateClientCommand < AdapterBase
 
       def initialize(config: Configuration)
         super
@@ -18,7 +18,7 @@ module Existence
       private
 
       def send_to_port(params, jwt)
-        return Right(OpenStruct.new(body: mock_create_acct_value, status: :ok)) if @config.config.mock
+        # return Right(OpenStruct.new(body: mock_create_acct_value, status: :ok)) if @config.config.mock
         port.new.send_on_port(params: params,
                               credentials: bearer_token(jwt),
                               service: service,
@@ -27,16 +27,11 @@ module Existence
       end
 
       def resource
-        @config.resource_for(:accounts)
+        @config.resource_for(:oauth_clients)
       end
 
-      def mock_create_acct_value
+      def mock_create_client_value
         {
-          "@type" => "client_account",
-          "id" => "8e787204-328c-49d6-8f51-4175f5f86ebf",
-          "name" => "Account Name",
-          "state" => "prospect",
-          "links" => [{"rel"=>"self", "href"=>"/api/client_accounts/8e787204-328c-49d6-8f51-4175f5f86ebf"}]
         }
       end
 

@@ -14,7 +14,9 @@ module Existence
                     token: '/oauth/token',
                     logout: '/logout',
                     authorise: '/oauth/authorize',
-                    accounts: '/api/client_accounts'}
+                    accounts: '/api/client_accounts',
+                    oauth_clients: '/api/oauth_clients'
+                    }
 
       def build
         yield config

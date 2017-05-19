@@ -23,9 +23,10 @@ module Existence
 
       private
 
-      def build_links(links)
+      def build_links(type, links)
+        return [] unless links.present?
         links.map do |link|
-          @link_value.new(rel: link["rel"], href: link["href"])
+          @link_value.new(type: type, rel: link["rel"], href: link["href"])
         end
       end
 
@@ -41,6 +42,7 @@ module Existence
       end
 
       def build_attributes(error_attrs)
+        return [] unless error_attrs
         error_attrs.map do |attr|
           @service_error_attr_value.new(attribute: attr["attribute"], message: attr["message"])
         end
