@@ -1,20 +1,20 @@
 require_relative 'concept_value'
 require_relative '../adapters/get_scopes_command'
+require_relative 'domain_base'
 
 module Existence
 
   module Domain
 
-    class Scope
+    class Scope < DomainBase
 
       include Dry::Monads::Either::Mixin
 
       def initialize(concept_value: Domain::ConceptValue,
-                     get_scopes_command_adapter: Adapters::GetScopesCommand,
-                     config: Configuration)
+                     get_scopes_command_adapter: Adapters::GetScopesCommand)
+        super
         @get_scopes_command_adapter = get_scopes_command_adapter
         @concept_value = concept_value
-        @config = config
       end
 
       def get_scopes
@@ -28,7 +28,7 @@ module Existence
       private
 
       def perform_get_scopes
-        return Right(mock_value) if @config.config.mock
+        return Right(mock_value) if @config.mock
         @get_scopes_command_adapter.new.()
       end
 

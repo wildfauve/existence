@@ -2,25 +2,24 @@ require_relative '../adapters/get_user_authz_command'
 require_relative '../adapters/cancel_authz_command'
 require_relative 'authz_value'
 require_relative 'client_value'
+require_relative 'domain_base'
 
 module Existence
 
   module Domain
 
-    class Authorisation
+    class Authorisation < DomainBase
 
       include Dry::Monads::Either::Mixin
 
       def initialize(authz_value: Domain::AuthzValue,
-                     client_value: Domain::ClientValue,
+                     client: Domain::Client,
                      cancel_command_adapter: Adapters::CancelAuthzCommand,
-                     get_user_command_adapter: Adapters::GetUserAuthzCommand,
-                     config: Configuration)
+                     get_user_command_adapter: Adapters::GetUserAuthzCommand)
         @get_user_command_adapter = get_user_command_adapter
         @cancel_command_adapter = cancel_command_adapter
         @authz_value = authz_value
-        @client_value = client_value
-        @config = config
+        @client = client
       end
 
       def get_authorisations(params, credentials)
@@ -42,12 +41,12 @@ module Existence
       private
 
       def perform_get_authorisations(params, credentials)
-        return Right(mock_get_value) if @config.config.mock
+        return Right(mock_get_value) if @config.mock
         @get_user_command_adapter.new.(params: params, jwt: credentials)
       end
 
       def perform_cancel_authorisations(cancel_link, credentials)
-        return Right(mock_cancel_value) if @config.config.mock
+        return Right(mock_cancel_value) if @config.mock
         @cancel_command_adapter.new.(cancel_link: cancel_link, jwt: credentials)
       end
 
@@ -67,12 +66,12 @@ module Existence
       end
 
       def build_client(client)
-        @client_value.new(
-            name: client["name"],
-            type: client["type"],
-            external_client: client["external_client"],
-            account_name: client["account"]["name"]
-        )
+        @client.new.build(client)
+        #     name: client["name"],
+        #     type: client["type"],
+        #     external_client: client["external_client"],
+        #     account_name: client["account"]["name"]
+        # )
       end
 
       def link_for(rel, links)
@@ -88,7 +87,7 @@ module Existence
                 "created_at"=>"2016-12-01 11:17:23 +1300",
                 "expires_at"=>"2017-01-30 11:17:23 +1300",
                 "scope"=>[],
-                "client"=>{"kind"=>"client", "name"=>"External_1", "type"=>"standard_client", "external_client"=>true, "account"=>{"name" => "External Totalitarian Corporate"}},
+                "client"=>{"id": "1", "kind"=>"client", "name"=>"External_1", "type"=>"standard_client", "external_client"=>true, "account"=>{"name" => "External Totalitarian Corporate"}},
                 "links"=>[
                   {"rel"=>"cancel", "href"=>"/api/user_authz/d9683368-64c0-45f1-a144-cb0c71b895e2"}
                 ]

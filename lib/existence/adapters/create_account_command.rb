@@ -8,7 +8,6 @@ module Existence
 
       def initialize(config: Configuration)
         super
-        @config = config
       end
 
       def call(params: , jwt:)
@@ -18,7 +17,7 @@ module Existence
       private
 
       def send_to_port(params, jwt)
-        return Right(OpenStruct.new(body: mock_create_acct_value, status: :ok)) if @config.config.mock
+        return Right(OpenStruct.new(body: mock_create_acct_value, status: :ok)) if @config.mock
         port.new.send_on_port(params: params,
                               credentials: bearer_token(jwt),
                               service: service,
@@ -27,7 +26,7 @@ module Existence
       end
 
       def resource
-        @config.resource_for(:accounts)
+        @config.resources.accounts
       end
 
       def mock_create_acct_value

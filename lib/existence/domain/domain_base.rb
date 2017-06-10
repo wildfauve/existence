@@ -15,7 +15,7 @@ module Existence
                      service_error_attr_value: ServiceErrorAttrValue,
                      link_value: LinkValue,
                      **)
-        @config = config
+        @config = config.config
         @link_value = link_value
         @service_error_value = service_error_value
         @service_error_attr_value = service_error_attr_value
@@ -23,15 +23,24 @@ module Existence
 
       private
 
-      def build_links(type, links)
-        return [] unless links.present?
+      def build_links(type:, links:, id: )
+        return [] unless links.present? || id
+        return links_from_id(type, id) if links.nil? || links.empty?
         links.map do |link|
-          @link_value.new(type: type, rel: link["rel"], href: link["href"])
+          if link["rel"] == "self"
+            @link_value.new(rel: type, href: link["href"])
+          else
+            @link_value.new(rel: link["rel"], href: link["href"])
+          end
         end
       end
 
+      def links_from_id(type, id)
+        [@link_value.new(rel: type, href: id)]
+      end
+
       def service_error(error)
-        return Left(error) unless error && error.instance_of?(HttpResponseValue)
+        return Left(error) unless error && error.body && error.instance_of?(HttpResponseValue)
         Left(build_error_value(error.body[ERROR_OBJECT]))
       end
 

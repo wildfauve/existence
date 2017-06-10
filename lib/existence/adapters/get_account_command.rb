@@ -8,40 +8,35 @@ module Existence
 
       def initialize(config: Configuration)
         super
-        @config = config
       end
 
-      def call(params: , jwt:)
-        result(get_from_port(params, jwt))
+      def call(params: , jwt:, resource:)
+        result(get_from_port(params, jwt, resource))
       end
 
       private
 
-      def get_from_port(params, jwt)
-        return Right(OpenStruct.new(body: mock_account_collection, status: :ok)) if @config.config.mock
+      def get_from_port(params, jwt, resource)
+        return Right(OpenStruct.new(body: mock_account, status: :ok)) if @config.mock
         port.new.get_from_port(query_params: params, credentials: bearer_token(jwt),  service: service, resource: resource)
       end
 
-      def resource
-        @config.resource_for(:accounts)
-      end
-
-      def mock_account_collection
+      def mock_account
         {
-          "@type" => "client_accounts_feed",
-          "accounts" => [
+          "@type": "client_account",
+          "id": "41cd850d-ae17-4748-b29c-b21e33dd5718",
+          "name": "Acct3",
+          "state": "prospect",
+          "links": [
             {
-              "@type" => "client_account",
-              "id"=>"api/client_accounts/1",
-              "name"=>"An Account"
+              "rel": "self",
+              "href": "/api/client_accounts/41cd850d-ae17-4748-b29c-b21e33dd5718"
             },
             {
-              "@type" => "client_account",
-              "id"=>"api/client_accounts/1",
-              "name"=>"Another Account"
+              "rel": "oauth_clients_feed",
+              "href": "/api/client_accounts/41cd850d-ae17-4748-b29c-b21e33dd5718/oauth_clients"
             }
-          ],
-          "links" => [{"rel"=>"self", "href"=>"/api/client_accounts"}]
+          ]
         }
       end
 

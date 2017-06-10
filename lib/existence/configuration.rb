@@ -1,52 +1,37 @@
-require 'ostruct'
-
 module Existence
-
-  class Config < OpenStruct ; end
 
   class Configuration
 
-    class << self
+    extend Dry::Configurable
 
-      RESOURCES = { scopes: '/api/concepts/scopes',
-                    authz: '/api/user_authz',
-                    userinfo: '/userinfo',
-                    token: '/oauth/token',
-                    logout: '/logout',
-                    authorise: '/oauth/authorize',
-                    accounts: '/api/client_accounts',
-                    oauth_clients: '/api/oauth_clients'
-                    }
+    setting :resources do
+      setting :home, '/api'
+      setting :scopes, '/api/concepts/scopes'
+      setting :authz, '/api/user_authz'
+      setting :userinfo, '/userinfo'
+      setting :token, '/oauth/token'
+      setting :logout, '/logout'
+      setting :authorise, '/oauth/authorize'
+      setting :accounts, '/api/client_accounts'
+      setting :oauth_clients, '/api/oauth_clients'
+    end
 
-      def build
-        yield config
-        set_resources
-        self
-      end
+    setting :rels do
+      setting :oauth_clients_feed, "oauth_clients_feed"
+    end
 
-      def config
-        @config ||= Existence::Config.new
-      end
+    setting :identity_host
 
-      def set_resources
-        config.resources = RESOURCES
-      end
+    setting :client_id
 
-      def resource_for(resource)
-        config.resources[resource]
-      end
+    setting :client_secret
 
-      def endpoint_for(resource)
-        config.identity_host + resource_for(resource)
-      end
+    setting :identity_public_key
 
-      # def set_resources
-      #   RESOURCES.map { |n,v| config.send("#{n}=".to_sym, v)}
-      # end
+    setting :service_name
 
+    setting :mock
 
-    end # class << self
-
-  end  # clas Configuration
+  end  # class Configuration
 
 end  # module ScoreCard

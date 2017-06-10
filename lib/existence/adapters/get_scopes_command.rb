@@ -21,7 +21,7 @@ module Existence
       end
 
       def resource
-        @config.resource_for(:scopes)
+        @config.resources.scopes
       end
 
     end

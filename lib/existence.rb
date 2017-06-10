@@ -13,6 +13,7 @@ end
 
 module Existence
 
+  require 'existence/identity_resources'
   require 'existence/configuration'
   require 'existence/validations/predicates'
   require 'existence/services/service_base'

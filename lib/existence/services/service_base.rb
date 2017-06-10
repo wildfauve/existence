@@ -5,7 +5,7 @@ module Existence
     class ServiceBase
 
       def initialize(config: Configuration, **)
-        @config = config
+        @config = config.config
       end
 
       def user_bearer(user)
@@ -19,7 +19,7 @@ module Existence
       private
 
       def oauth_client_credentials
-        { client_id: @config.config.client_id, client_secret: @config.config.client_secret }
+        { client_id: @config.client_id, client_secret: @config.client_secret }
       end
 
 

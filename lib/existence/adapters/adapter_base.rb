@@ -14,7 +14,7 @@ module Existence
 
       def initialize(port: Ports::IdentityPort, config: Configuration, **) #oauth_token_value: Domain::OauthTokenValue
         @port = port
-        @config = config
+        @config = config.config
         # @oauth_token_value = oauth_token_value
       end
 
@@ -47,7 +47,7 @@ module Existence
       end
 
       def service
-        @config.config.identity_host
+        @config.identity_host
       end
 
 

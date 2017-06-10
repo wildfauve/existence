@@ -21,7 +21,7 @@ module Existence
       end
 
       def resource
-        @config.resource_for(:userinfo)
+        @config.resources.userinfo
       end
 
     end

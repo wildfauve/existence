@@ -4,10 +4,12 @@ module Existence
 
     class ClientValue < Dry::Struct
 
-      attribute :name,            Types::String
       attribute :type,            Types::String
-      attribute :external_client, Types::Bool
-      attribute :account_name,    Types::String
+      attribute :id,              Types::String
+      attribute :name,            Types::String
+      attribute :client_id,       Types::String
+      attribute :client_secret,   Types::String.optional
+      attribute :links,           Types::Array
 
     end
 

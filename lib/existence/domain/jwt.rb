@@ -1,19 +1,19 @@
 require_relative 'jwt_value'
+require_relative 'domain_base'
 
 module Existence
 
   module Domain
 
-    class Jwt
+    class Jwt < DomainBase
 
       include Dry::Monads::Either::Mixin
       include Dry::Monads::Try::Mixin
 
 
-      def initialize(jwt_value: Domain::JwtValue,
-                     config: Configuration)
+      def initialize(jwt_value: Domain::JwtValue)
+        super
         @jwt_value = jwt_value
-        @config = config
       end
 
       def call(oauth_token)
@@ -38,7 +38,7 @@ module Existence
 
       def decode!(jwt)
         return nil if jwt.nil?
-        decoded_jwt = JSON::JWT.decode(jwt, @config.config.identity_public_key)
+        decoded_jwt = JSON::JWT.decode(jwt, @config.identity_public_key)
         jwt_expired?(decoded_jwt) ? nil : decoded_jwt
       end
 

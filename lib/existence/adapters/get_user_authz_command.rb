@@ -8,7 +8,6 @@ module Existence
 
       def initialize(config: Configuration)
         super
-        @config = config
       end
 
       def call(params: , jwt:)
@@ -22,7 +21,7 @@ module Existence
       end
 
       def resource
-        @config.resource_for(:authz)
+        @config.resources.authz
       end
 
 

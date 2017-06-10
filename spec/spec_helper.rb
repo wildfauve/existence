@@ -6,7 +6,7 @@ require 'dry-monads'
 
 M = Dry::Monads
 
-Existence::Configuration.build do |config|
+Existence::Configuration.configure do |config|
   config.identity_host = "http://localhost:5000"
   config.client_id = "client_id"
   config.client_secret = "client_secret"

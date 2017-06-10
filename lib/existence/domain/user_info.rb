@@ -1,12 +1,13 @@
 require_relative '../adapters/get_userinfo_command'
 require_relative 'user_info_value'
+require_relative 'domain_base'
 require_relative 'context_assertions_value'
 
 module Existence
 
   module Domain
 
-    class UserInfo
+    class UserInfo < DomainBase
 
       include Dry::Monads::Either::Mixin
 
@@ -16,12 +17,11 @@ module Existence
 
       def initialize(adapter: Adapters::GetUserInfoCommand,
                      user_info_value: Domain::UserInfoValue,
-                     context_assertions_value: Domain::ContextAssertionValue,
-                     config: Configuration)
+                     context_assertions_value: Domain::ContextAssertionValue)
+        super
         @adapter = adapter
         @user_info_value = user_info_value
         @context_assertions_value = context_assertions_value
-        @config = config
       end
 
 
@@ -38,7 +38,7 @@ module Existence
       private
 
       def get_user_info(token)
-        return Right(mock_value) if @config.config.mock
+        return Right(mock_value) if @config.mock
         adapter.new.(jwt: token.jwt)
       end
 
@@ -79,11 +79,11 @@ module Existence
       end
 
       def service_name
-        @config.config.service_name
+        @config.service_name
       end
       def mock_value
         {
-         "sub"=>"af75c3b7-21a3-4fd1-ac85-2180f754166c",
+         "sub"=>"sub_1",
          "email"=>nil,
          "email_verified"=>true,
          "preferred_name"=>"Test1+User",

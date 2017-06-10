@@ -28,7 +28,8 @@ module Existence
         required(:redirect_uri) { uri? }
         optional(:logout_endpoint) { uri? }
         required(:account_link) { url_path?}
-        # optional(:logout_endpoint) { format?(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/) }
+        required(:client_type).value(included_in?: ["standard_client", "native_client"])
+        required(:handle) {format?(/^[\S]+$/) }
 
       end
 

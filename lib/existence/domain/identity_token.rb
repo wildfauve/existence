@@ -6,7 +6,7 @@ module Existence
 
   module Domain
 
-    class IdentityToken
+    class IdentityToken < DomainBase
 
       AUTHORISATION_CODE       = "authorization_code"
       CLIENT_CREDENTIALS_GRANT = "client_credentials"
@@ -17,12 +17,10 @@ module Existence
 
       def initialize(adapter: Adapters::GetTokenCommand,
                      token_value: Domain::IdentityTokenValue,
-                     jwt: Domain::Jwt,
-                     config: Configuration)
+                     jwt: Domain::Jwt)
         @adapter = adapter
         @token_value = token_value
         @jwt = jwt
-        @config = Configuration
       end
 
       def call(params:, credentials: )

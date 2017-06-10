@@ -8,7 +8,6 @@ module Existence
 
       def initialize(config: Configuration)
         super
-        @config = config
       end
 
       def call(params: , jwt:)
@@ -18,7 +17,7 @@ module Existence
       private
 
       def send_to_port(params, jwt)
-        # return Right(OpenStruct.new(body: mock_create_acct_value, status: :ok)) if @config.config.mock
+        return Right(OpenStruct.new(body: mock_create_acct_value, status: :ok)) if @config.mock
         port.new.send_on_port(params: params,
                               credentials: bearer_token(jwt),
                               service: service,
@@ -27,12 +26,20 @@ module Existence
       end
 
       def resource
-        @config.resource_for(:oauth_clients)
+        @config.resources.oauth_clients
       end
 
       def mock_create_client_value
         {
-        }
+          "@type"=>"oauth_client",
+          "id"=>"36803706-6111-429f-95b3-0e3d34efca73",
+          "name"=>"app1",
+          "client_id"=>"1b3b6hb4rxw0uhnsum90zg2r2ixl92d2bkxxzluvefxqrv8wmx",
+          "client_secret"=>"84hbpxn9sqkzs173qmtum12mc3j27bxhlll5dxzu35mn1khnh",
+          "links"=>
+          [{"rel"=>"self", "href"=>"/api/oauth_clients/36803706-6111-429f-95b3-0e3d34efca73"},
+           {"rel"=>"client_account", "href"=>"/api/client_accounts/23f34d9a-8d33-440a-b271-8f5a9d1553c4"}]
+         }
       end
 
 

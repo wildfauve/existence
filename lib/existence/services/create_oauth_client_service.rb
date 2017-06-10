@@ -20,6 +20,12 @@ module Existence
         @validations_factory = validations_factory
       end
 
+      # + client_params:
+      #   - name; string
+      #   - redirect_uri; uri
+      #   - logout_endpoint; uri
+      #   - client_type; string; "standard_client" or "native_app"
+      #   - account_link; uri, retrieved from a GET /api/accounts call
       def call(client_params:, authorising_token:, policy_decision_point: nil)
         return Left(nil) if !policy_decision_point.nil? && check_authorisation(decision_point: policy_decision_point, action: ACTION_LIST).left?
         Right(client_params: client_params, authorising_token: authorising_token, policy_decision_point: policy_decision_point).bind do |input|
