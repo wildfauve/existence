@@ -69,7 +69,7 @@ module Existence
 
       def_delegators :@value, :name, :id, :links, :type, :state
 
-      attr_reader :value
+      attr_reader :value, :clients
 
       def initialize(get_command_adapter: Adapters::GetAccountFeedCommand,
                      create_command_adapter: Adapters::CreateAccountCommand,
@@ -101,7 +101,12 @@ module Existence
 
       def client_feed(scoping_user_token, authorising_token)
         feed = @clients_feed.new.feed(account: self, scoping_user_token: scoping_user_token, authorising_token: authorising_token)
-        binding.pry
+        if feed.success?
+          @clients = feed.value
+          Right(self)
+        else
+          feed
+        end
       end
 
       def clients_feed_link

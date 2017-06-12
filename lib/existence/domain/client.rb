@@ -18,10 +18,8 @@ module Existence
           Right(account: account, scoping_user_token: scoping_user_token, authorising_token: authorising_token).bind do |input|
             perform_get_clients(input[:account], input[:scoping_user_token], input[:authorising_token])
           end.bind do |clients_feed|
-            binding.pry
-            Right(clients_feed["accounts"].map {|client| new().build(client) })
+            Right(clients_feed["oauth_clients"].map {|client| new().build(client) })
           end.or do |error|
-            binding.pry
             Left(error)
           end
         end

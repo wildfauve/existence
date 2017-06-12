@@ -15,12 +15,10 @@ module Existence
       end
 
       def feed(account:, scoping_user_token:, authorising_token:)
-        binding.pry
         Right(account: account, scoping_user: scoping_user_token, authorising_token: authorising_token).bind do |input|
           perform_get_clients(account, scoping_user_token, authorising_token)
         end.bind do |result|
-          binding.pry
-          @accounts = result
+          @clients = result
           Right(self)
         end.or do |error|
           service_error(error)
@@ -28,11 +26,11 @@ module Existence
       end
 
       def each(&block)
-        @accounts.each(&block)
+        @clients.each(&block)
       end
 
       def empty?
-        @accounts.empty?
+        @clients.empty?
       end
 
       private

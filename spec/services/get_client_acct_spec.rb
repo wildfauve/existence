@@ -54,26 +54,60 @@ describe Existence::Services::GetAccountService do
     let(:account) {
       {
         "@type" => "client_account",
-        "id" => "1",
+        "id" => "a1",
         "name" => "new account",
         "state" => "prospect",
         "links" => [
-          {"rel"=>"self", "href"=>"/api/client_accounts/8e808527-04d1-4176-9802-89a482c03c2b"},
-          {"rel"=>"oauth_clients_feed", "href"=>"/api/client_accounts/8e808527-04d1-4176-9802-89a482c03c2b/oauth_clients"}
+          {"rel"=>"self", "href"=>"/api/client_accounts/a1"},
+          {"rel"=>"oauth_clients_feed", "href"=>"/api/client_accounts/a1/oauth_clients"}
+        ]
+      }
+    }
+
+    let(:clients) {
+      {
+        "@type" => "oauth_clients_feed",
+        "oauth_clients" => [
+          {
+            "@type" => "oauth_client",
+            "id" => "/api/client_accounts/a1/oauth_clients/1",
+            "name" => "Client 1"
+          },
+          {
+            "@type" => "oauth_client",
+            "id" => "/api/client_accounts/a1/oauth_clients/2",
+            "name" => "Client 2"
+          }
+        ],
+        "links": [
+          {
+            "rel": "self",
+            "href": "/api/client_accounts/a1/oauth_clients"
+          },
+          {
+            "rel": "client_account",
+            "href": "/api/client_accounts/a1"
+          }
         ]
       }
     }
 
     let(:get_account_port_resp) { M.Right(OpenStruct.new(body: account, status: :ok)) }
 
-    it 'should get the account' do
+    let(:client_feed) { M.Right(clients) }
+
+    it 'should get the account and the clients' do
 
       allow(Existence::Ports::IdentityPort).to receive_message_chain(:new, :get_from_port).and_return(get_account_port_resp)
+
+      allow(Existence::Adapters::GetClientFeedCommand).to receive_message_chain(:new, :call)
+                                                      .and_return(client_feed)
 
       acct = Existence::Services::GetAccountService.new.find(id: "/api/client_accounts/1",
                                                              scoping_user_token: "user",
                                                              authorising_token: "system")
-      binding.pry
+      expect(acct).to be_success
+      expect(acct.value.clients.map(&:name)).to include('Client 1', 'Client 2')
 
     end
 

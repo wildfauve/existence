@@ -21,22 +21,31 @@ module Existence
         port.new.get_from_port(query_params: params, credentials: bearer_token(jwt),  service: service, resource: resource)
       end
 
-      def mock_account_collection
+      def mock_clients_collection
         {
-          "@type" => "client_accounts_feed",
-          "accounts" => [
+          "@type" => "oauth_clients_feed",
+          "oauth_clients" => [
             {
-              "@type" => "client_account",
-              "id"=>"api/client_accounts/1",
-              "name"=>"An Account"
+              "@type" => "oauth_client",
+              "id" => "/api/client_accounts/a1/oauth_clients/1",
+              "name" => "Client 1"
             },
             {
-              "@type" => "client_account",
-              "id"=>"api/client_accounts/2",
-              "name"=>"Another Account"
+              "@type" => "oauth_client",
+              "id" => "/api/client_accounts/a1/oauth_clients/2",
+              "name" => "Client 2"
             }
           ],
-          "links" => [{"rel"=>"self", "href"=>"/api/client_accounts"}]
+          "links": [
+            {
+              "rel": "self",
+              "href": "/api/client_accounts/a1/oauth_clients"
+            },
+            {
+              "rel": "client_account",
+              "href": "/api/client_accounts/a1"
+            }
+          ]
         }
       end
 
