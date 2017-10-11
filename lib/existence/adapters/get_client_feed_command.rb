@@ -28,12 +28,14 @@ module Existence
             {
               "@type" => "oauth_client",
               "id" => "/api/client_accounts/a1/oauth_clients/1",
-              "name" => "Client 1"
+              "name" => "Client 1",
+              "redirect_uri" => "http://example.com/redirect"
             },
             {
               "@type" => "oauth_client",
               "id" => "/api/client_accounts/a1/oauth_clients/2",
-              "name" => "Client 2"
+              "name" => "Client 2",
+              "redirect_uri" => "http://example.com/redirect"
             }
           ],
           "links": [

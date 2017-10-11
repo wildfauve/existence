@@ -18,6 +18,7 @@ module Existence
 
     setting :rels do
       setting :oauth_clients_feed, "oauth_clients_feed"
+      setting :client_account, "client_account"
     end
 
     setting :identity_host
@@ -27,6 +28,8 @@ module Existence
     setting :client_secret
 
     setting :identity_public_key
+
+    setting :identity_private_key
 
     setting :service_name
 

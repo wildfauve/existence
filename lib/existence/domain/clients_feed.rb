@@ -36,7 +36,19 @@ module Existence
       private
 
       def perform_get_clients(account, scoping_user_token, authorising_token)
-        @client.feed(account, scoping_user_token, authorising_token)
+        Right(nil).bind do
+          get_client_feed_adapter.new.(resource: account.clients_feed_link.href,
+                                       params: { scoping_user: scoping_user_token },
+                                       jwt: authorising_token)
+        end.bind do |clients_feed|
+          Right(clients_feed["oauth_clients"].map {|client| @client.new().build(client) })
+        end.or do |error|
+          Left(error)
+        end
+      end
+
+      def get_client_feed_adapter
+        Adapters::GetClientFeedCommand
       end
 
     end

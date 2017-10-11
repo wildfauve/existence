@@ -27,7 +27,7 @@ module Existence
         required(:name) { str? }
         required(:redirect_uri) { uri? }
         optional(:logout_endpoint) { uri? }
-        required(:account_link) { url_path?}
+        required(:oauth_clients_link) { url_path?}
         required(:client_type).value(included_in?: ["standard_client", "native_client"])
         required(:handle) {format?(/^[\S]+$/) }
 

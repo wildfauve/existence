@@ -113,6 +113,10 @@ module Existence
         @value.links.detect {|l| l.rel == @config.rels.oauth_clients_feed}
       end
 
+      def self_link
+        @value.links.detect {|l| l.rel == @config.rels.client_account}
+      end
+
       private
 
       def perform_create_account(account_params, authorising_token)

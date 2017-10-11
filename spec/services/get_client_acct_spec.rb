@@ -31,9 +31,9 @@ describe Existence::Services::GetAccountService do
 
       accts = Existence::Services::GetAccountService.new.(scoping_user_token: "user", authorising_token: "system" )
 
-      link = Existence::Domain::LinkValue.new(rel: "client_account", href: "api/client_accounts/1")
+      link = Existence::Domain::LinkValue.new(rel: "client_account", href: "/api/client_accounts/1")
       value = Existence::Domain::AccountValue.new(type:"client_account",
-                                                  id: "api/client_accounts/1",
+                                                  id: "/api/client_accounts/1",
                                                   name: "An Account",
                                                   state: "prospect",
                                                   links: [link])
@@ -42,9 +42,9 @@ describe Existence::Services::GetAccountService do
       expect(accts.value.count).to eq 2
       acct = accts.value.first
       expect(acct).to be_instance_of Existence::Domain::Account
-      expect(acct.id).to eq "api/client_accounts/1"
+      expect(acct.id).to eq "/api/client_accounts/1"
       expect(acct.links.size).to eq 1
-      expect(acct.links.first.href).to eq "api/client_accounts/1"
+      expect(acct.links.first.href).to eq "/api/client_accounts/1"
     end
 
   end  # context accounts

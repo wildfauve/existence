@@ -21,12 +21,8 @@ module Existence
         port.new.send_on_port(params: params,
                               credentials: bearer_token(jwt),
                               service: service,
-                              resource: resource,
+                              resource: params[:oauth_clients_link],
                               encoding: :json )
-      end
-
-      def resource
-        @config.resources.oauth_clients
       end
 
       def mock_create_client_value

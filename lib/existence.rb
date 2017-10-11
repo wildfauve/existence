@@ -15,6 +15,7 @@ module Existence
 
   require 'existence/identity_resources'
   require 'existence/configuration'
+  require 'existence/validations/dry_types'
   require 'existence/validations/predicates'
   require 'existence/services/service_base'
   require 'existence/services/scopes_service'

@@ -14,26 +14,6 @@ module Existence
 
       class << self
 
-        def feed(account, scoping_user_token, authorising_token)
-          Right(account: account, scoping_user_token: scoping_user_token, authorising_token: authorising_token).bind do |input|
-            perform_get_clients(input[:account], input[:scoping_user_token], input[:authorising_token])
-          end.bind do |clients_feed|
-            Right(clients_feed["oauth_clients"].map {|client| new().build(client) })
-          end.or do |error|
-            Left(error)
-          end
-        end
-
-        def perform_get_clients(account, scoping_user_token, authorising_token)
-          get_client_feed_adapter.new.(resource: account.clients_feed_link,
-                                       params: { scoping_user: scoping_user_token },
-                                       jwt: authorising_token)
-        end
-
-        def get_client_feed_adapter
-          Adapters::GetClientFeedCommand
-        end
-
       end # class methods
 
       def initialize(create_command_adapter: Adapters::CreateClientCommand,
@@ -77,6 +57,8 @@ module Existence
                           name:           result["name"],
                           client_id:      result["client_id"],
                           client_secret:  result["client_secret"],
+                          redirect_uri:   result["redirect_uri"],
+                          logout_endpoint: result["logout_endpoint"],
                           links:          build_links(type: result["@type"], links: result["links"], id: result["id"]))
       end
 
